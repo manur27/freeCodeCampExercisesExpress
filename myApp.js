@@ -2,8 +2,14 @@
 var express = require('express');
 var app = express();
 
-// --> 7)  Mount the Logger middleware here
 
+app.all
+
+// --> 7)  Mount the Logger middleware here
+  app.use(function middleware(req, res, next){
+    console.log(req.method + " " + req.path + " - " + req.ip);
+    next();
+  });
 
 // --> 11)  Mount the body-parser middleware  here
 
@@ -47,9 +53,16 @@ app.get("/json", function(req, res){
 
 /** 8) Chaining middleware. A Time server */
 
+app.get("/now", function(req, res, next){
+  req.time = new Date().toString();
+  next();
+},
+  function(req, res){
+    res.send({"time": req.time});
+  }
+);
 
 /** 9)  Get input from client - Route parameters */
-
 
 /** 10) Get input from client - Query parameters */
 // /name?first=<firstname>&last=<lastname>
@@ -60,7 +73,6 @@ app.get("/json", function(req, res){
 
 
 /** 12) Get data form POST  */
-
 
 
 // This would be part of the basic setup of an Express app
